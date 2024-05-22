@@ -3,11 +3,8 @@ const path = require('path');
 const { JsonDatabase } = require('wio.db');
 const app = express();
 const port = 8765;
-<<<<<<< HEAD
 
-const db = new JsonDatabase({ databasePath: 'myDatabase.json' });
-=======
->>>>>>> ff82b8ff29cc643f0486e6219816d2764c266fe6
+const db = new JsonDatabase({ databasePath: './databases/myDatabase.json' });
 
 app.use(express.json());
 app.use('/admin', express.static(path.join(__dirname, 'admin')));

@@ -112,3 +112,20 @@ form button[type="submit"] {
 form button[type="submit"]:hover {
   background-color: #45a049;
 }
+
+.product-item {
+  border: 1px solid #ced4da;
+  padding: 1.25rem;
+  border-radius: 0.25rem;
+  background-color: #e9ecef;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.product-item:hover {
+  border-color: #adb5bd;
+  background-color: #dee2e6;
+  box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.1);
+}

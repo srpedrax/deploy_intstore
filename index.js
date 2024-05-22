@@ -67,9 +67,17 @@ app.post('/api/products', upload.single('image'), (req, res) => {
 
   const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
 
-  const newProduct = { name, price, description, imagePath };
+  const newProductId = getNextProductId(); // Obter o próximo ID disponível para o novo produto
 
-  // Adiciona área de observações, se fornecidas
+  const newProduct = {
+    id: newProductId,
+    name,
+    price,
+    description,
+    imagePath
+  };
+
+  // Adicionar área de observações, se fornecidas
   if (observationTitle || observationDescription) {
     newProduct.observations = {
       title: observationTitle || '',
@@ -84,6 +92,33 @@ app.post('/api/products', upload.single('image'), (req, res) => {
   res.status(201).json({ message: 'Produto criado com sucesso' });
 });
 
+app.get('/api/products/:productId', (req, res) => {
+  const productId = parseInt(req.params.productId);
+  const products = db.get('products') || [];
+  const product = products.find(product => product.id === productId);
+  if (!product) {
+    return res.status(404).json({ message: 'Produto não encontrado' });
+  }
+  res.status(200).json(product);
+});
+
+app.delete('/api/products/:productId', (req, res) => {
+  const productId = parseInt(req.params.productId);
+  const products = db.get('products') || [];
+  const updatedProducts = products.filter(product => product.id !== productId);
+  db.set('products', updatedProducts);
+  res.status(200).json({ message: `Produto com ID ${productId} excluído com sucesso` });
+});
+
+function getNextProductId() {
+  const products = db.get('products') || [];
+  if (products.length === 0) {
+    return 1; // Se não houver produtos cadastrados, retorna o ID 1
+  }
+  const lastProduct = products[products.length - 1];
+  return lastProduct.id + 1; // Retorna o próximo ID após o último produto cadastrado
+}
+
 app.listen(port, () => {
-  console.log(`Servidor rodando em http://18.231.123.155:${port}`);
+  console.log(`Servidor rodando em http://localhost:${port}`);
 });

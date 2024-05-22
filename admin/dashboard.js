@@ -70,11 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('create-product-form').addEventListener('submit', (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const newProduct = {};
-        formData.forEach((value, key) => {
-          newProduct[key] = value;
-        });
-        createProduct(newProduct);
+        createProduct(formData); // Passa o FormData diretamente
       });
     }
     modal.style.display = 'block';
@@ -97,10 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       const response = await fetch('/api/products', {
         method: 'POST',
-        headers: {
-          // 'Content-Type': 'application/json', // Não definimos Content-Type para FormData
-        },
-        body: productData, // Usamos diretamente FormData como corpo
+        body: productData, // Agora enviamos diretamente o FormData
       });
       if (!response.ok) {
         throw new Error('Erro ao criar produto');
